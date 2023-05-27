@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2023/05/21 18:36:40.000.466,=D:\documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/05/21 18:37:09.000.941,D:\documents\Projects\SistemaClinica\UnitPrincipal.pas=D:\documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/05/21 18:37:09.000.941,D:\documents\Projects\SistemaClinica\UnitPrincipal.dfm=D:\documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2023/05/21 18:37:22.000.407,D:\documents\Projects\SistemaClinica\Clinica.dproj=D:\documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2023/05/21 19:03:33.000.918,=D:\documents\Projects\SistemaClinica\Unit2.pas</Transaction>
+    <Transaction>2023/05/21 19:03:59.000.281,D:\documents\Projects\SistemaClinica\UnitCadPacientes.dfm=D:\documents\Projects\SistemaClinica\Unit2.dfm</Transaction>
+    <Transaction>2023/05/21 19:03:59.000.281,D:\documents\Projects\SistemaClinica\UnitCadPacientes.pas=D:\documents\Projects\SistemaClinica\Unit2.pas</Transaction>
+    <Transaction>2023/05/21 19:04:15.000.632,=D:\documents\Projects\SistemaClinica\Unit3.pas</Transaction>
+    <Transaction>2023/05/21 19:04:29.000.810,D:\documents\Projects\SistemaClinica\UnitCadAgendamentos.dfm=D:\documents\Projects\SistemaClinica\Unit3.dfm</Transaction>
+    <Transaction>2023/05/21 19:04:29.000.810,D:\documents\Projects\SistemaClinica\UnitCadAgendamentos.pas=D:\documents\Projects\SistemaClinica\Unit3.pas</Transaction>
+    <Transaction>2023/05/22 19:46:12.000.262,=D:\documents\Projects\SistemaClinica\Unit1.pas</Transaction>
+    <Transaction>2023/05/22 19:51:42.000.231,D:\documents\Projects\SistemaClinica\Unit1.dfm=D:\documents\Projects\SistemaClinica\UnitDM.dfm</Transaction>
+    <Transaction>2023/05/22 19:51:42.000.231,D:\documents\Projects\SistemaClinica\Unit1.pas=D:\documents\Projects\SistemaClinica\UnitDM.pas</Transaction>
+  </Transactions>
+</BorlandProject>

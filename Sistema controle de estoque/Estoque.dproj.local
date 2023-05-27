@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2023/05/26 21:24:56.000.308,=D:\documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/05/26 21:25:28.000.379,D:\documents\Embarcadero\Studio\Projects\Unit1.pas=D:\documents\Projects\Sistema controle de estoque\UnitPrincipal.pas</Transaction>
+    <Transaction>2023/05/26 21:25:28.000.379,D:\documents\Embarcadero\Studio\Projects\Unit1.dfm=D:\documents\Projects\Sistema controle de estoque\UnitPrincipal.dfm</Transaction>
+    <Transaction>2023/05/26 21:25:38.000.341,D:\documents\Embarcadero\Studio\Projects\Project1.dproj=D:\documents\Projects\Sistema controle de estoque\Estoque.dproj</Transaction>
+    <Transaction>2023/05/26 21:27:10.607,=D:\documents\Projects\Sistema controle de estoque\Unit1.pas</Transaction>
+    <Transaction>2023/05/26 21:27:36.109,D:\documents\Projects\Sistema controle de estoque\UnitCadProdutos.pas=D:\documents\Projects\Sistema controle de estoque\Unit1.pas</Transaction>
+    <Transaction>2023/05/26 21:27:36.109,D:\documents\Projects\Sistema controle de estoque\UnitCadProdutos.dfm=D:\documents\Projects\Sistema controle de estoque\Unit1.dfm</Transaction>
+    <Transaction>2023/05/26 21:27:50.171,=D:\documents\Projects\Sistema controle de estoque\Unit1.pas</Transaction>
+    <Transaction>2023/05/26 21:28:04.888,D:\documents\Projects\Sistema controle de estoque\UnitCadMovimentacao.pas=D:\documents\Projects\Sistema controle de estoque\Unit1.pas</Transaction>
+    <Transaction>2023/05/26 21:28:04.888,D:\documents\Projects\Sistema controle de estoque\UnitCadMovimentacao.dfm=D:\documents\Projects\Sistema controle de estoque\Unit1.dfm</Transaction>
+    <Transaction>2023/05/26 21:28:37.708,=D:\documents\Projects\Sistema controle de estoque\Unit1.pas</Transaction>
+    <Transaction>2023/05/26 21:29:08.430,D:\documents\Projects\Sistema controle de estoque\UnitConsMovimentacao.pas=D:\documents\Projects\Sistema controle de estoque\Unit1.pas</Transaction>
+    <Transaction>2023/05/26 21:29:08.430,D:\documents\Projects\Sistema controle de estoque\UnitConsMovimentacao.dfm=D:\documents\Projects\Sistema controle de estoque\Unit1.dfm</Transaction>
+    <Transaction>2023/05/26 21:29:30.642,=D:\documents\Projects\Sistema controle de estoque\Unit1.pas</Transaction>
+    <Transaction>2023/05/26 21:29:56.147,D:\documents\Projects\Sistema controle de estoque\UnitDM.dfm=D:\documents\Projects\Sistema controle de estoque\Unit1.dfm</Transaction>
+    <Transaction>2023/05/26 21:29:56.147,D:\documents\Projects\Sistema controle de estoque\UnitDM.pas=D:\documents\Projects\Sistema controle de estoque\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>
