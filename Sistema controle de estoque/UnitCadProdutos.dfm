@@ -4,8 +4,8 @@ object FormCadProdutos: TFormCadProdutos
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Cadastro de Produtos'
-  ClientHeight = 459
-  ClientWidth = 778
+  ClientHeight = 451
+  ClientWidth = 745
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -92,22 +92,30 @@ object FormCadProdutos: TFormCadProdutos
     Font.Style = []
     ParentFont = False
   end
-  object DBNavigator1: TDBNavigator
-    Left = 368
-    Top = 33
-    Width = 384
-    Height = 40
-    DataSource = DM.dsProdutos
-    VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbInsert, nbDelete, nbPost, nbCancel]
-    TabOrder = 0
-  end
-  object DBEdit1: TDBEdit
+  object txtNomeProd: TDBEdit
     Left = 32
     Top = 188
     Width = 321
     Height = 29
     DataField = 'nome'
     DataSource = DM.dsProdutos
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+  end
+  object txtFabricante: TDBEdit
+    Left = 32
+    Top = 243
+    Width = 194
+    Height = 29
+    DataField = 'fabricante'
+    DataSource = DM.dsProdutos
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -116,28 +124,14 @@ object FormCadProdutos: TFormCadProdutos
     ParentFont = False
     TabOrder = 1
   end
-  object DBEdit2: TDBEdit
-    Left = 32
-    Top = 244
-    Width = 194
-    Height = 29
-    DataField = 'fabricante'
-    DataSource = DM.dsProdutos
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 2
-  end
-  object DBEdit3: TDBEdit
+  object edtValidade: TDBEdit
     Left = 232
     Top = 244
     Width = 119
     Height = 29
     DataField = 'validade'
     DataSource = DM.dsProdutos
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -145,15 +139,16 @@ object FormCadProdutos: TFormCadProdutos
     Font.Style = []
     MaxLength = 10
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 2
   end
-  object DBEdit4: TDBEdit
+  object txtEstoque: TDBEdit
     Left = 32
     Top = 305
     Width = 166
     Height = 29
     DataField = 'estoqueAtual'
     DataSource = DM.dsProdutos
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -161,15 +156,15 @@ object FormCadProdutos: TFormCadProdutos
     Font.Style = []
     ParentFont = False
     ReadOnly = True
-    TabOrder = 4
+    TabOrder = 3
   end
   object DBGrid1: TDBGrid
-    Left = 391
-    Top = 119
+    Left = 375
+    Top = 31
     Width = 361
-    Height = 316
+    Height = 402
     DataSource = DM.dsProdutos
-    TabOrder = 5
+    TabOrder = 4
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
@@ -209,11 +204,12 @@ object FormCadProdutos: TFormCadProdutos
   end
   object DBEdit5: TDBEdit
     Left = 32
-    Top = 140
+    Top = 138
     Width = 121
     Height = 29
     DataField = 'id'
     DataSource = DM.dsProdutos
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -221,6 +217,44 @@ object FormCadProdutos: TFormCadProdutos
     Font.Style = []
     ParentFont = False
     ReadOnly = True
+    TabOrder = 5
+  end
+  object btnInclui: TButton
+    Left = 24
+    Top = 402
+    Width = 75
+    Height = 31
+    Caption = 'Incluir'
     TabOrder = 6
+    OnClick = btnIncluiClick
+  end
+  object btnExclui: TButton
+    Left = 105
+    Top = 402
+    Width = 75
+    Height = 31
+    Caption = 'Excluir'
+    TabOrder = 7
+    OnClick = btnExcluiClick
+  end
+  object btnCancela: TButton
+    Left = 266
+    Top = 402
+    Width = 75
+    Height = 31
+    Caption = 'Cancelar'
+    Enabled = False
+    TabOrder = 8
+    OnClick = btnCancelaClick
+  end
+  object btnConfirma: TButton
+    Left = 186
+    Top = 402
+    Width = 75
+    Height = 31
+    Caption = 'Confirmar'
+    Enabled = False
+    TabOrder = 9
+    OnClick = btnConfirmaClick
   end
 end

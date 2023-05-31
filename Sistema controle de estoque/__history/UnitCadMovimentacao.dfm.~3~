@@ -1,0 +1,90 @@
+object FormCadMovimentacao: TFormCadMovimentacao
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Cadastro de Movimenta'#231#227'o'
+  ClientHeight = 465
+  ClientWidth = 816
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  TextHeight = 15
+  object Label1: TLabel
+    Left = 24
+    Top = 24
+    Width = 298
+    Height = 32
+    Caption = 'Gerenciar Movimenta'#231#245'es'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -24
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 24
+    Top = 99
+    Width = 122
+    Height = 15
+    Caption = 'Tipo da Movimenta'#231#227'o'
+  end
+  object Label3: TLabel
+    Left = 23
+    Top = 155
+    Width = 62
+    Height = 15
+    Caption = 'Data e Hora'
+  end
+  object Label4: TLabel
+    Left = 24
+    Top = 209
+    Width = 65
+    Height = 15
+    Caption = 'Respons'#225'vel'
+  end
+  object Label5: TLabel
+    Left = 23
+    Top = 267
+    Width = 67
+    Height = 15
+    Caption = 'Observa'#231#245'es'
+  end
+  object DBComboBox1: TDBComboBox
+    Left = 24
+    Top = 120
+    Width = 298
+    Height = 23
+    Style = csDropDownList
+    Items.Strings = (
+      'Entrada'
+      'Saida')
+    TabOrder = 0
+  end
+  object DBEdit1: TDBEdit
+    Left = 24
+    Top = 176
+    Width = 121
+    Height = 23
+    TabOrder = 1
+  end
+  object DBEdit2: TDBEdit
+    Left = 23
+    Top = 227
+    Width = 298
+    Height = 23
+    TabOrder = 2
+  end
+  object DBMemo1: TDBMemo
+    Left = 23
+    Top = 288
+    Width = 298
+    Height = 145
+    TabOrder = 3
+  end
+end

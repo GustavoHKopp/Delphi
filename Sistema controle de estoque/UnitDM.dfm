@@ -22,6 +22,7 @@ object DM: TDM
     object tbProdutosid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
+      ReadOnly = True
     end
     object tbProdutosnome: TStringField
       FieldName = 'nome'
