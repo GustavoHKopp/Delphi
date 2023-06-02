@@ -13,6 +13,7 @@ object FormCadProdutos: TFormCadProdutos
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
+  OnShow = FormShow
   TextHeight = 15
   object Label1: TLabel
     Left = 32

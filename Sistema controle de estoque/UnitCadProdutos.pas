@@ -29,6 +29,7 @@ type
     procedure btnIncluiClick(Sender: TObject);
     procedure btnExcluiClick(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -75,7 +76,15 @@ procedure TFormCadProdutos.btnExcluiClick(Sender: TObject);
 begin
  if Application.MessageBox('Deseja Excluir este produto?', 'Excluir', MB_ICONQUESTION+MB_YESNO) = MRYES then
  BEGIN
-   DM.tbProdutos.Delete;
+
+   if (StrToInt(txtEstoque.text) > 0) then
+    begin
+      Application.MessageBox('Impossivel excluir produtos com quantidade em estoque', 'Impossivel', MB_ICONERROR+MB_OK)
+    end
+   else
+    begin
+      DM.tbProdutos.Delete;
+    end;
  END;
 end;
 
@@ -91,6 +100,11 @@ begin
 
  DM.tbProdutos.Append;
  DM.tbProdutos.FieldByName('validade').Value := now;
+end;
+
+procedure TFormCadProdutos.FormShow(Sender: TObject);
+begin
+  DM.tbProdutos.Refresh;
 end;
 
 end.

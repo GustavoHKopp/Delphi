@@ -23,6 +23,15 @@ type
     btnExclui: TButton;
     btnCancela: TButton;
     btnConfirma: TButton;
+    Label6: TLabel;
+    DBNavigator1: TDBNavigator;
+    DBLookupComboBox1: TDBLookupComboBox;
+    Label7: TLabel;
+    Label8: TLabel;
+    DBEdit2: TDBEdit;
+    DBGrid2: TDBGrid;
+    Label9: TLabel;
+    txtTotalProdutos: TLabel;
     procedure btnIncluiClick(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
     procedure btnCancelaClick(Sender: TObject);
@@ -77,7 +86,16 @@ procedure TFormCadMovimentacao.btnExcluiClick(Sender: TObject);
 begin
 if Application.MessageBox('Deseja excluir a movimentação?', 'Excluir', MB_ICONQUESTION+MB_YESNO) = MRYES then
   BEGIN
-     DM.tbMovimentacoes.Delete;
+     if (StrToInt(txtTotalProdutos.caption) > 0) then
+     begin
+       Application.MessageBox('Impossivel excluir movimentação com quantidade', 'Impossivel', MB_ICONERROR+MB_OK)
+     end
+     else
+     begin
+        DM.tbMovimentacoes.Delete;
+     end;
+
+
   END;
 end;
 
@@ -94,7 +112,5 @@ begin
  DM.tbMovimentacoes.Append;
  DM.tbMovimentacoes.FieldByName('dataHora').value := now
 end;
-
-
 
 end.

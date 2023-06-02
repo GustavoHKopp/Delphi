@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.ExtCtrls,
+  Vcl.Imaging.pngimage;
 
 type
   TFormPrincipal = class(TForm)
@@ -15,11 +16,13 @@ type
     Produto1: TMenuItem;
     Movimentaes1: TMenuItem;
     GerenciarMovimentaes1: TMenuItem;
-    ConsultarMovimentaes1: TMenuItem;
+    EditorSql1: TMenuItem;
+    Image1: TImage;
     procedure Sistema2Click(Sender: TObject);
     procedure Produto1Click(Sender: TObject);
     procedure GerenciarMovimentaes1Click(Sender: TObject);
     procedure ConsultarMovimentaes1Click(Sender: TObject);
+    procedure EditorSql1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -33,11 +36,16 @@ implementation
 
 {$R *.dfm}
 
-uses UnitCadProdutos, UnitCadMovimentacao, UnitConsMovimentacao;
+uses UnitCadProdutos, UnitCadMovimentacao, UnitConsMovimentacao, UnitEditorSql;
 
 procedure TFormPrincipal.ConsultarMovimentaes1Click(Sender: TObject);
 begin
  FormConsMovimentacao.showModal
+end;
+
+procedure TFormPrincipal.EditorSql1Click(Sender: TObject);
+begin
+ FormEditorSql.ShowModal;
 end;
 
 procedure TFormPrincipal.GerenciarMovimentaes1Click(Sender: TObject);

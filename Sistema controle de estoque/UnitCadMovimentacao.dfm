@@ -4,8 +4,8 @@ object FormCadMovimentacao: TFormCadMovimentacao
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Cadastro de Movimenta'#231#227'o'
-  ClientHeight = 489
-  ClientWidth = 1026
+  ClientHeight = 477
+  ClientWidth = 1087
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -79,6 +79,71 @@ object FormCadMovimentacao: TFormCadMovimentacao
     Font.Style = []
     ParentFont = False
   end
+  object Label6: TLabel
+    Left = 711
+    Top = 30
+    Width = 317
+    Height = 32
+    Caption = 'Produtos da Movimenta'#231#227'o'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -24
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label7: TLabel
+    Left = 711
+    Top = 99
+    Width = 125
+    Height = 21
+    Caption = 'Escolha o Produto'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label8: TLabel
+    Left = 951
+    Top = 92
+    Width = 81
+    Height = 21
+    Caption = 'Quantidade'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label9: TLabel
+    Left = 711
+    Top = 424
+    Width = 138
+    Height = 21
+    Caption = 'Total de Produtos:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object txtTotalProdutos: TLabel
+    Left = 855
+    Top = 424
+    Width = 18
+    Height = 21
+    Caption = '00'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object cbTpMov: TDBComboBox
     Left = 25
     Top = 91
@@ -149,7 +214,7 @@ object FormCadMovimentacao: TFormCadMovimentacao
     TabOrder = 3
   end
   object DBGrid1: TDBGrid
-    Left = 344
+    Left = 334
     Top = 91
     Width = 344
     Height = 312
@@ -217,5 +282,78 @@ object FormCadMovimentacao: TFormCadMovimentacao
     Enabled = False
     TabOrder = 8
     OnClick = btnConfirmaClick
+  end
+  object DBNavigator1: TDBNavigator
+    Left = 751
+    Top = 68
+    Width = 224
+    Height = 25
+    DataSource = DM.dsMovProdutos
+    VisibleButtons = [nbInsert, nbDelete, nbPost, nbCancel]
+    TabOrder = 9
+  end
+  object DBLookupComboBox1: TDBLookupComboBox
+    Left = 711
+    Top = 123
+    Width = 235
+    Height = 29
+    DataField = 'idProduto'
+    DataSource = DM.dsMovProdutos
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    KeyField = 'id'
+    ListField = 'nome'
+    ListSource = DM.dsProdutos
+    ParentFont = False
+    TabOrder = 10
+  end
+  object DBEdit2: TDBEdit
+    Left = 952
+    Top = 121
+    Width = 96
+    Height = 29
+    DataField = 'qtd'
+    DataSource = DM.dsMovProdutos
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 11
+  end
+  object DBGrid2: TDBGrid
+    Left = 711
+    Top = 168
+    Width = 337
+    Height = 235
+    DataSource = DM.dsMovProdutos
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 12
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -12
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'nomeProduto'
+        Title.Caption = 'Produto'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'qtd'
+        Visible = True
+      end>
   end
 end
