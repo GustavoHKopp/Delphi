@@ -81,7 +81,7 @@ object FormCadMovimentacao: TFormCadMovimentacao
   end
   object Label6: TLabel
     Left = 711
-    Top = 30
+    Top = 17
     Width = 317
     Height = 32
     Caption = 'Produtos da Movimenta'#231#227'o'
@@ -264,7 +264,7 @@ object FormCadMovimentacao: TFormCadMovimentacao
     OnClick = btnExcluiClick
   end
   object btnCancela: TButton
-    Left = 266
+    Left = 268
     Top = 430
     Width = 75
     Height = 31
@@ -274,7 +274,7 @@ object FormCadMovimentacao: TFormCadMovimentacao
     OnClick = btnCancelaClick
   end
   object btnConfirma: TButton
-    Left = 185
+    Left = 187
     Top = 430
     Width = 75
     Height = 31
@@ -283,22 +283,14 @@ object FormCadMovimentacao: TFormCadMovimentacao
     TabOrder = 8
     OnClick = btnConfirmaClick
   end
-  object DBNavigator1: TDBNavigator
-    Left = 751
-    Top = 68
-    Width = 224
-    Height = 25
-    DataSource = DM.dsMovProdutos
-    VisibleButtons = [nbInsert, nbDelete, nbPost, nbCancel]
-    TabOrder = 9
-  end
-  object DBLookupComboBox1: TDBLookupComboBox
+  object cbProd: TDBLookupComboBox
     Left = 711
-    Top = 123
+    Top = 121
     Width = 235
     Height = 29
     DataField = 'idProduto'
     DataSource = DM.dsMovProdutos
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -308,22 +300,23 @@ object FormCadMovimentacao: TFormCadMovimentacao
     ListField = 'nome'
     ListSource = DM.dsProdutos
     ParentFont = False
-    TabOrder = 10
+    TabOrder = 9
   end
-  object DBEdit2: TDBEdit
+  object edtQtde: TDBEdit
     Left = 952
     Top = 121
     Width = 96
     Height = 29
     DataField = 'qtd'
     DataSource = DM.dsMovProdutos
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 11
+    TabOrder = 10
   end
   object DBGrid2: TDBGrid
     Left = 711
@@ -337,7 +330,8 @@ object FormCadMovimentacao: TFormCadMovimentacao
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 12
+    ReadOnly = True
+    TabOrder = 11
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
@@ -355,5 +349,43 @@ object FormCadMovimentacao: TFormCadMovimentacao
         FieldName = 'qtd'
         Visible = True
       end>
+  end
+  object btnIncluiProd: TButton
+    Left = 713
+    Top = 61
+    Width = 75
+    Height = 31
+    Caption = 'Incluir'
+    TabOrder = 12
+    OnClick = btnIncluiProdClick
+  end
+  object btnExcluiProd: TButton
+    Left = 794
+    Top = 61
+    Width = 75
+    Height = 31
+    Caption = 'Excluir'
+    TabOrder = 13
+    OnClick = btnExcluiProdClick
+  end
+  object btnCancelaProd: TButton
+    Left = 957
+    Top = 61
+    Width = 75
+    Height = 31
+    Caption = 'Cancelar'
+    Enabled = False
+    TabOrder = 14
+    OnClick = btnCancelaProdClick
+  end
+  object BtnConfirmaProd: TButton
+    Left = 876
+    Top = 61
+    Width = 75
+    Height = 31
+    Caption = 'Confirmar'
+    Enabled = False
+    TabOrder = 15
+    OnClick = BtnConfirmaProdClick
   end
 end

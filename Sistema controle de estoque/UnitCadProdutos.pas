@@ -54,26 +54,36 @@ begin
    btnCancela.Enabled := false;
    txtNomeProd.Enabled := false;
    txtFabricante.Enabled := false;
-   txtEstoque.Enabled := false;
 
    DM.tbProdutos.Cancel;
 end;
 
 procedure TFormCadProdutos.btnConfirmaClick(Sender: TObject);
 begin
-   btnInclui.Enabled := true;
-   btnExclui.Enabled := true;
-   btnConfirma.Enabled := false;
-   btnCancela.Enabled := false;
-   txtNomeProd.Enabled := false;
-   txtFabricante.Enabled := false;
-   txtEstoque.Enabled := false;
+   if txtNomeProd.Text = '' then
+    begin
+      Application.MessageBox('Impossivel cadastrar produto sem nome', 'Favor preencher o nome', MB_ICONEXCLAMATION+MB_OK);
+    end;
+   if txtFabricante.Text = '' then
+    begin
+      Application.MessageBox('Impossivel cadastrar produto sem fabricante', 'Favor preencher o fabricante', MB_ICONEXCLAMATION+MB_OK);
+    end;
+   if (txtFabricante.Text <> '') and (txtNomeProd.Text <> '') then
+    begin
+       btnInclui.Enabled := true;
+       btnExclui.Enabled := true;
+       btnConfirma.Enabled := false;
+       btnCancela.Enabled := false;
+       txtNomeProd.Enabled := false;
+       txtFabricante.Enabled := false;
 
-   DM.tbProdutos.Post;
+       DM.tbProdutos.Post;
+    end;
 end;
 
 procedure TFormCadProdutos.btnExcluiClick(Sender: TObject);
 begin
+DM.tbProdutos.Refresh;
  if Application.MessageBox('Deseja Excluir este produto?', 'Excluir', MB_ICONQUESTION+MB_YESNO) = MRYES then
  BEGIN
 
@@ -96,7 +106,6 @@ begin
  btnCancela.Enabled := true;
  txtNomeProd.Enabled := true;
  txtFabricante.Enabled := true;
- txtEstoque.Enabled := true;
 
  DM.tbProdutos.Append;
  DM.tbProdutos.FieldByName('validade').Value := now;

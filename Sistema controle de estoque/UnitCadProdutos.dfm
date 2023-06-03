@@ -4,8 +4,8 @@ object FormCadProdutos: TFormCadProdutos
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Cadastro de Produtos'
-  ClientHeight = 451
-  ClientWidth = 745
+  ClientHeight = 450
+  ClientWidth = 741
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -57,9 +57,9 @@ object FormCadProdutos: TFormCadProdutos
   object Label3: TLabel
     Left = 232
     Top = 223
-    Width = 59
+    Width = 57
     Height = 21
-    Caption = 'Validade'
+    Caption = 'Inculs'#227'o'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -156,7 +156,6 @@ object FormCadProdutos: TFormCadProdutos
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    ReadOnly = True
     TabOrder = 3
   end
   object DBGrid1: TDBGrid

@@ -110,6 +110,31 @@ object DM: TDM
     TableName = 'estoque.movimentacoes'
     Left = 104
     Top = 272
+    object tbMovimentacoesid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+    end
+    object tbMovimentacoestipo: TStringField
+      FieldName = 'tipo'
+      Origin = 'tipo'
+      Required = True
+    end
+    object tbMovimentacoesdataHora: TDateTimeField
+      FieldName = 'dataHora'
+      Origin = 'dataHora'
+      Required = True
+    end
+    object tbMovimentacoesresponsavel: TStringField
+      FieldName = 'responsavel'
+      Origin = 'responsavel'
+      Required = True
+      Size = 30
+    end
+    object tbMovimentacoesobservacoes: TMemoField
+      FieldName = 'observacoes'
+      Origin = 'observacoes'
+      BlobType = ftMemo
+    end
   end
   object dsMovimentacoes: TDataSource
     DataSet = tbMovimentacoes
@@ -164,5 +189,23 @@ object DM: TDM
     DataSet = sqlMovimentacoes
     Left = 504
     Top = 248
+  end
+  object sqlValidaEstoque: TFDQuery
+    Active = True
+    Connection = Conexao
+    SQL.Strings = (
+      'select * from produtos')
+    Left = 384
+    Top = 320
+    ParamData = <
+      item
+        Name = 'id'
+        ParamType = ptInput
+      end>
+  end
+  object dsValidaEstoque: TDataSource
+    DataSet = sqlValidaEstoque
+    Left = 496
+    Top = 320
   end
 end

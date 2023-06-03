@@ -33,6 +33,13 @@ type
     tbMovProdutosidProduto: TIntegerField;
     tbMovProdutosqtd: TIntegerField;
     tbMovProdutosnomeProduto: TStringField;
+    sqlValidaEstoque: TFDQuery;
+    dsValidaEstoque: TDataSource;
+    tbMovimentacoesid: TFDAutoIncField;
+    tbMovimentacoestipo: TStringField;
+    tbMovimentacoesdataHora: TDateTimeField;
+    tbMovimentacoesresponsavel: TStringField;
+    tbMovimentacoesobservacoes: TMemoField;
     procedure calcularTotais;
     procedure tbMovimentacoesAfterScroll(DataSet: TDataSet);
     procedure tbMovProdutosAfterDelete(DataSet: TDataSet);
