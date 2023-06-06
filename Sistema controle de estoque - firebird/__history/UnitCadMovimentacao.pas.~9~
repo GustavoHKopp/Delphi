@@ -1,0 +1,141 @@
+unit UnitCadMovimentacao;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask,
+  Vcl.ExtCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormCadMovimentacao = class(TForm)
+    Label1: TLabel;
+    cbTpMov: TDBComboBox;
+    DBEdit1: TDBEdit;
+    txtResponsavel: TDBEdit;
+    mmObs: TDBMemo;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    DBGrid1: TDBGrid;
+    btnInclui: TButton;
+    btnExclui: TButton;
+    btnCancela: TButton;
+    btnConfirma: TButton;
+    Label6: TLabel;
+    DBNavigator1: TDBNavigator;
+    DBLookupComboBox1: TDBLookupComboBox;
+    Label7: TLabel;
+    Label8: TLabel;
+    DBEdit2: TDBEdit;
+    DBGrid2: TDBGrid;
+    Label9: TLabel;
+    txtTotalProdutos: TLabel;
+    btnAltera: TButton;
+    procedure btnIncluiClick(Sender: TObject);
+    procedure btnConfirmaClick(Sender: TObject);
+    procedure btnCancelaClick(Sender: TObject);
+    procedure btnExcluiClick(Sender: TObject);
+    procedure btnAlteraClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormCadMovimentacao: TFormCadMovimentacao;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitDM;
+
+
+procedure TFormCadMovimentacao.btnAlteraClick(Sender: TObject);
+begin
+     btnInclui.Enabled := false;
+     btnExclui.enabled := false;
+     btnConfirma.Enabled := true;
+     btnCancela.Enabled := true;
+     cbTpMov.Enabled := false;
+     txtResponsavel.ReadOnly := true;
+     mmObs.ReadOnly := true;
+     DBNavigator1.Enabled := true;
+end;
+
+procedure TFormCadMovimentacao.btnCancelaClick(Sender: TObject);
+begin
+
+ if Application.MessageBox('Deseja cancelar a movimentação?', 'Cancelar', MB_ICONERROR+MB_YESNO) = MRYES then
+  BEGIN
+     btnInclui.Enabled := true;
+     btnExclui.enabled := true;
+     btnConfirma.Enabled := false;
+     btnCancela.Enabled := false;
+     cbTpMov.Enabled := false;
+     txtResponsavel.ReadOnly := true;
+     mmObs.ReadOnly := true;
+     DBNavigator1.Enabled := false;
+
+     DM.tbMovimentacoes.Cancel;
+  END;
+end;
+
+procedure TFormCadMovimentacao.btnConfirmaClick(Sender: TObject);
+begin
+ if (strToInt(txtTotalProdutos.caption) = 0) then
+  begin
+    Application.MessageBox('Impossivel confirmar movimentação sem produtos!', 'Erro', MB_ICONERROR+MB_OK);
+  end
+ ELSE
+  BEGIN
+     btnInclui.Enabled := true;
+     btnExclui.enabled := true;
+     btnConfirma.Enabled := false;
+     btnCancela.Enabled := false;
+     cbTpMov.Enabled := false;
+     txtResponsavel.ReadOnly := true;
+     mmObs.ReadOnly := true;
+     DBNavigator1.Enabled := false;
+
+     DM.tbMovimentacoes.Post;
+  END;
+end;
+
+procedure TFormCadMovimentacao.btnExcluiClick(Sender: TObject);
+begin
+if Application.MessageBox('Deseja excluir a movimentação?', 'Excluir', MB_ICONQUESTION+MB_YESNO) = MRYES then
+  BEGIN
+     if (StrToInt(txtTotalProdutos.caption) > 0) then
+     begin
+       Application.MessageBox('Impossivel excluir movimentação com quantidade', 'Impossivel', MB_ICONERROR+MB_OK)
+     end
+     else
+     begin
+        DM.tbMovimentacoes.Delete;
+     end;
+
+
+  END;
+end;
+
+procedure TFormCadMovimentacao.btnIncluiClick(Sender: TObject);
+begin
+ btnInclui.Enabled := false;
+ btnExclui.enabled := false;
+ btnConfirma.Enabled := true;
+ btnCancela.Enabled := true;
+ btnAltera.Enabled := false;
+ cbTpMov.Enabled := True;
+ txtResponsavel.ReadOnly := false;
+ mmObs.ReadOnly := false;
+ DBNavigator1.Enabled := true;
+
+ DM.tbMovimentacoes.Append;
+ DM.tbMovimentacoes.FieldByName('dataHora').value := now
+end;
+
+end.
