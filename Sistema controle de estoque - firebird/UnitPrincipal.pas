@@ -23,10 +23,11 @@ type
     procedure GerenciarMovimentaes1Click(Sender: TObject);
     procedure ConsultarMovimentaes1Click(Sender: TObject);
     procedure EditorSql1Click(Sender: TObject);
+    function Aspas(Value : String) : String;
   private
     { Private declarations }
   public
-    { Public declarations }
+
   end;
 
 var
@@ -37,6 +38,11 @@ implementation
 {$R *.dfm}
 
 uses UnitCadProdutos, UnitCadMovimentacao, UnitConsMovimentacao, UnitEditorSql;
+
+function TFormPrincipal.Aspas(Value: String): String;
+begin
+ Aspas := QuotedStr(Value);
+end;
 
 procedure TFormPrincipal.ConsultarMovimentaes1Click(Sender: TObject);
 begin

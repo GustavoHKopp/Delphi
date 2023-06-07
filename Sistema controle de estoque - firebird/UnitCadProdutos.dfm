@@ -13,7 +13,6 @@ object FormCadProdutos: TFormCadProdutos
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
-  OnShow = FormShow
   TextHeight = 15
   object Label1: TLabel
     Left = 32
@@ -203,11 +202,12 @@ object FormCadProdutos: TFormCadProdutos
   end
   object txtId: TDBEdit
     Left = 32
-    Top = 138
+    Top = 141
     Width = 121
     Height = 29
     DataField = 'ID'
     DataSource = DM.dsProdutos
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16

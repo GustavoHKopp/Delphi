@@ -29,11 +29,10 @@ type
     procedure btnIncluiClick(Sender: TObject);
     procedure btnExcluiClick(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
-    { Public declarations }
+
   end;
 
 var
@@ -43,8 +42,7 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDM;
-
+uses UnitDM, FireDAC.Comp.Client, UnitPrincipal;
 
 procedure TFormCadProdutos.btnCancelaClick(Sender: TObject);
 begin
@@ -59,61 +57,124 @@ begin
 end;
 
 procedure TFormCadProdutos.btnConfirmaClick(Sender: TObject);
+var
+  vQry: TFDQuery;
 begin
-   if txtNomeProd.Text = '' then
-    begin
-      Application.MessageBox('Impossivel cadastrar produto sem nome', 'Favor preencher o nome', MB_ICONEXCLAMATION+MB_OK);
-    end;
-   if txtFabricante.Text = '' then
-    begin
-      Application.MessageBox('Impossivel cadastrar produto sem fabricante', 'Favor preencher o fabricante', MB_ICONEXCLAMATION+MB_OK);
-    end;
-   if (txtFabricante.Text <> '') and (txtNomeProd.Text <> '') then
-    begin
-       btnInclui.Enabled := true;
-       btnExclui.Enabled := true;
-       btnConfirma.Enabled := false;
-       btnCancela.Enabled := false;
-       txtNomeProd.Enabled := false;
-       txtFabricante.Enabled := false;
+    vQry := TFDQuery.Create(nil);
+    vQry.Connection := DM.Conexao;
 
-      DM.tbProdutos.Post;
-    end;
+   try
+      vQry.Close;
+      vQry.SQL.Clear;
+      vQry.Params.Clear;
+      ///comando de insert buscando os valores da tela
+       vQry.SQL.Add('INSERT INTO PRODUTOS(ID, NOME, FABRICANTE, VALIDADE, ESTOQUEATUAL) VALUES(:ID, :NOME, :FABRICANTE, :VALIDADE, :ESTOQUEATUAL)');
+       vQry.ParamByName('id').value := txtId.text;
+       vQry.ParamByName('nome').value := txtNomeProd.text;
+       vQry.ParamByName('fabricante').value := txtFabricante.text;
+       vQry.ParamByName('validade').Value := edtValidade.Text;
+       vQry.ParamByName('estoqueAtual').Value := '0';
+       ///validações de campos não informados
+       if txtNomeProd.Text = '' then
+        begin
+          Application.MessageBox('Impossivel cadastrar produto sem nome', 'Favor preencher o nome', MB_ICONEXCLAMATION+MB_OK);
+        end;
+       if txtFabricante.Text = '' then
+        begin
+          Application.MessageBox('Impossivel cadastrar produto sem fabricante', 'Favor preencher o fabricante', MB_ICONEXCLAMATION+MB_OK);
+        end;
+       if (txtFabricante.Text <> '') and (txtNomeProd.Text <> '') then
+        begin
+           btnInclui.Enabled := true;
+           btnExclui.Enabled := true;
+           btnConfirma.Enabled := false;
+           btnCancela.Enabled := false;
+           txtNomeProd.Enabled := false;
+           txtFabricante.Enabled := false;
+
+           vQry.ExecSQL;
+           DM.tbProdutos.Cancel;
+        end;
+   finally
+     vQry.Free;
+   end;
 end;
 
 procedure TFormCadProdutos.btnExcluiClick(Sender: TObject);
+var
+  pQry: TFDQuery;
 begin
-DM.tbProdutos.Refresh;
+    pQry := TFDQuery.Create(nil);
+    pQry.Connection := DM.Conexao;
+
+    DM.tbProdutos.Refresh;
+
+    ///validações se o produtos possui estoque e é possivel excluir ou não
  if Application.MessageBox('Deseja Excluir este produto?', 'Excluir', MB_ICONQUESTION+MB_YESNO) = MRYES then
  BEGIN
-
    if (StrToInt(txtEstoque.text) > 0) then
     begin
       Application.MessageBox('Impossivel excluir produtos com quantidade em estoque', 'Impossivel', MB_ICONERROR+MB_OK)
     end
    else
     begin
-      DM.tbProdutos.Delete;
+     try
+        pQry.Close;
+        pQry.SQL.Clear;
+        pQry.Params.Clear;
+
+        pQry.SQL.Add('DELETE FROM PRODUTOS WHERE ID = :ID');
+        pQry.ParamByName('id').value := txtId.text;
+
+        pQry.ExecSQL;
+        DM.tbprodutos.Refresh;
+     finally
+       pQry.Free;
+     end;
     end;
  END;
 end;
 
 procedure TFormCadProdutos.btnIncluiClick(Sender: TObject);
+var
+  iQry : TFDQuery;
+  result : integer;
 begin
- btnInclui.Enabled := false;
- btnExclui.Enabled := false;
- btnConfirma.Enabled := true;
- btnCancela.Enabled := true;
- txtNomeProd.Enabled := true;
- txtFabricante.Enabled := true;
+   iQry := TFDQuery.Create(nil);
+   iQry.Connection := DM.Conexao;
 
- DM.tbProdutos.Append;
- DM.tbProdutos.FieldByName('validade').Value := now;
-end;
+   try
+     iQry.Close;
+     iQry.SQL.Clear;
+     iQry.Params.Clear;
 
-procedure TFormCadProdutos.FormShow(Sender: TObject);
-begin
-  DM.tbProdutos.Refresh;
+     iQry.SQL.Add('SELECT MAX(ID) +1 FROM PRODUTOS');
+     iQry.Open;
+     ///seta o valor de result para o campo ID do produto +1
+     if iQry.RecordCount = 0 then
+        begin
+          result := 1
+        end
+       else
+        begin
+          result := iQry.Fields[0].AsInteger;
+        end;
+       ///enabled ou disabled campos na tela
+       btnInclui.Enabled := false;
+       btnExclui.Enabled := false;
+       btnConfirma.Enabled := true;
+       btnCancela.Enabled := true;
+       txtNomeProd.Enabled := true;
+       txtFabricante.Enabled := true;
+      ///funcoes de inclusão no banco de dados
+      DM.tbProdutos.Append;
+      DM.tbProdutos.FieldByName('validade').Value := now;
+      DM.tbProdutos.FieldByName('id').Value := result;
+      DM.tbProdutos.FieldByName('estoqueAtual').Value := '0'
+   finally
+      iQry.Free;
+   end;
+
 end;
 
 end.
