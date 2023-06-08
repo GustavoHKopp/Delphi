@@ -4,8 +4,8 @@ object FormCadMovimentacao: TFormCadMovimentacao
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Cadastro de Movimenta'#231#227'o'
-  ClientHeight = 477
-  ClientWidth = 1087
+  ClientHeight = 476
+  ClientWidth = 1083
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -28,7 +28,7 @@ object FormCadMovimentacao: TFormCadMovimentacao
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 63
+    Left = 25
     Top = 62
     Width = 158
     Height = 21
@@ -145,7 +145,7 @@ object FormCadMovimentacao: TFormCadMovimentacao
     ParentFont = False
   end
   object cbTpMov: TDBComboBox
-    Left = 63
+    Left = 25
     Top = 89
     Width = 217
     Height = 29
@@ -164,7 +164,7 @@ object FormCadMovimentacao: TFormCadMovimentacao
     ParentFont = False
     TabOrder = 0
   end
-  object DBEdit1: TDBEdit
+  object txtDataHora: TDBEdit
     Left = 24
     Top = 151
     Width = 218
@@ -272,7 +272,7 @@ object FormCadMovimentacao: TFormCadMovimentacao
     OnClick = btnCancelaClick
   end
   object btnConfirma: TButton
-    Left = 187
+    Left = 186
     Top = 430
     Width = 75
     Height = 31
@@ -386,28 +386,34 @@ object FormCadMovimentacao: TFormCadMovimentacao
     TabOrder = 15
     OnClick = BtnConfirmaProdClick
   end
-  object txtId: TDBEdit
-    Left = 25
-    Top = 89
-    Width = 32
-    Height = 29
+  object txtIdMov: TDBEdit
+    Left = 268
+    Top = 94
+    Width = 41
+    Height = 23
     DataField = 'ID'
     DataSource = DM.dsMovimentacoes
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
     TabOrder = 16
+    Visible = False
   end
-  object DBEdit2: TDBEdit
-    Left = 616
-    Top = 48
+  object txtIdProd: TDBEdit
+    Left = 1007
+    Top = 426
     Width = 41
     Height = 23
     DataField = 'ID'
     DataSource = DM.dsProdutos
     TabOrder = 17
+    Visible = False
+  end
+  object txtIdMovProd: TDBEdit
+    Left = 647
+    Top = 35
+    Width = 41
+    Height = 23
+    DataField = 'ID'
+    DataSource = DM.dsMovProdutos
+    TabOrder = 18
+    Visible = False
   end
 end

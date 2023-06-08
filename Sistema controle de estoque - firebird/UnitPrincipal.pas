@@ -21,7 +21,6 @@ type
     procedure Sistema2Click(Sender: TObject);
     procedure Produto1Click(Sender: TObject);
     procedure GerenciarMovimentaes1Click(Sender: TObject);
-    procedure ConsultarMovimentaes1Click(Sender: TObject);
     procedure EditorSql1Click(Sender: TObject);
     function Aspas(Value : String) : String;
   private
@@ -37,16 +36,11 @@ implementation
 
 {$R *.dfm}
 
-uses UnitCadProdutos, UnitCadMovimentacao, UnitConsMovimentacao, UnitEditorSql;
+uses UnitCadProdutos, UnitCadMovimentacao,  UnitEditorSql;
 
 function TFormPrincipal.Aspas(Value: String): String;
 begin
  Aspas := QuotedStr(Value);
-end;
-
-procedure TFormPrincipal.ConsultarMovimentaes1Click(Sender: TObject);
-begin
- FormConsMovimentacao.showModal
 end;
 
 procedure TFormPrincipal.EditorSql1Click(Sender: TObject);

@@ -4,7 +4,7 @@
         <ProjectVersion>19.5</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -110,10 +110,6 @@
             <Form>FormCadMovimentacao</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="UnitConsMovimentacao.pas">
-            <Form>FormConsMovimentacao</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="UnitDM.pas">
             <Form>DM</Form>
             <FormType>dfm</FormType>
@@ -123,6 +119,7 @@
             <Form>FormEditorSql</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UnFuncoes.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

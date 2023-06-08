@@ -29,6 +29,7 @@ type
     procedure btnIncluiClick(Sender: TObject);
     procedure btnExcluiClick(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -102,19 +103,43 @@ end;
 
 procedure TFormCadProdutos.btnExcluiClick(Sender: TObject);
 var
-  pQry: TFDQuery;
+  pQry, qQry: TFDQuery;
+  possuiMov : integer;
 begin
-    pQry := TFDQuery.Create(nil);
-    pQry.Connection := DM.Conexao;
+pQry := TFDQuery.Create(nil);
+pQry.Connection := DM.Conexao;
+qQry := TFDQuery.Create(nil);
+qQry.Connection := DM.Conexao;
 
-    DM.tbProdutos.Refresh;
+DM.tbProdutos.Refresh;
+try
+  qQry.Close;
+  qQry.SQL.Clear;
+  qQry.Params.Clear;
+
+  qQry.SQL.Add('SELECT IDPRODUTO FROM MOVIMENTACOES_PRODUTO WHERE IDPRODUTO = :idProd');
+  qQry.ParamByName('idProd').Value := txtId.Text;
+  qQry.Open;
+
+  if not qQry.IsEmpty then
+    begin
+      possuiMov := 1;
+    end
+  else
+    begin
+      possuiMov := 0;
+    end;
+finally
+
+end;
+
 
     ///validações se o produtos possui estoque e é possivel excluir ou não
  if Application.MessageBox('Deseja Excluir este produto?', 'Excluir', MB_ICONQUESTION+MB_YESNO) = MRYES then
  BEGIN
-   if (StrToInt(txtEstoque.text) > 0) then
+   if (possuiMov = 1) then
     begin
-      Application.MessageBox('Impossivel excluir produtos com quantidade em estoque', 'Impossivel', MB_ICONERROR+MB_OK)
+      Application.MessageBox('Impossivel excluir produtos vinculados a movimentações', 'Impossivel', MB_ICONERROR+MB_OK)
     end
    else
     begin
@@ -175,6 +200,11 @@ begin
       iQry.Free;
    end;
 
+end;
+
+procedure TFormCadProdutos.FormShow(Sender: TObject);
+begin
+ DM.tbProdutos.Refresh;
 end;
 
 end.

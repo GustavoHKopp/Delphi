@@ -1,19 +1,7 @@
 object DM: TDM
+  OnCreate = DataModuleCreate
   Height = 480
   Width = 640
-  object Conexao: TFDConnection
-    Params.Strings = (
-      'Database=D:\documents\base\ESTOQUE.FDB'
-      'User_Name=SYSDBA'
-      'Password=masterkey'
-      'Port=3050'
-      'Server=localhost'
-      'DriverID=FB')
-    Connected = True
-    LoginPrompt = False
-    Left = 64
-    Top = 48
-  end
   object tbProdutos: TFDTable
     Active = True
     IndexFieldNames = 'ID'
@@ -146,6 +134,48 @@ object DM: TDM
     Left = 224
     Top = 264
   end
+  object sqlMovimentacoes: TFDQuery
+    Active = True
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT * FROM movimentacoes')
+    Left = 384
+    Top = 248
+  end
+  object dsSqlMovimentacoes: TDataSource
+    DataSet = sqlMovimentacoes
+    Left = 504
+    Top = 248
+  end
+  object sqlValidaEstoque: TFDQuery
+    Active = True
+    Connection = Conexao
+    SQL.Strings = (
+      'select * from produtos')
+    Left = 384
+    Top = 320
+    ParamData = <
+      item
+        Name = 'id'
+        ParamType = ptInput
+      end>
+  end
+  object dsValidaEstoque: TDataSource
+    DataSet = sqlValidaEstoque
+    Left = 496
+    Top = 320
+  end
+  object Conexao: TFDConnection
+    Params.Strings = (
+      'User_Name=sysdba'
+      'Password=masterkey'
+      'Database=D:\documents\base\ESTOQUE.FDB'
+      'DriverID=FB')
+    Connected = True
+    LoginPrompt = False
+    Left = 64
+    Top = 48
+  end
   object sqlAumentaEstoque: TFDCommand
     Connection = Conexao
     CommandText.Strings = (
@@ -185,36 +215,5 @@ object DM: TDM
       end>
     Left = 496
     Top = 112
-  end
-  object sqlMovimentacoes: TFDQuery
-    Active = True
-    Connection = Conexao
-    SQL.Strings = (
-      'SELECT * FROM movimentacoes')
-    Left = 384
-    Top = 248
-  end
-  object dsSqlMovimentacoes: TDataSource
-    DataSet = sqlMovimentacoes
-    Left = 504
-    Top = 248
-  end
-  object sqlValidaEstoque: TFDQuery
-    Active = True
-    Connection = Conexao
-    SQL.Strings = (
-      'select * from produtos')
-    Left = 384
-    Top = 320
-    ParamData = <
-      item
-        Name = 'id'
-        ParamType = ptInput
-      end>
-  end
-  object dsValidaEstoque: TDataSource
-    DataSet = sqlValidaEstoque
-    Left = 496
-    Top = 320
   end
 end

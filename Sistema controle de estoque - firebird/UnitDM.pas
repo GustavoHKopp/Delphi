@@ -8,19 +8,17 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MySQL,
   FireDAC.Phys.MySQLDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.FBDef;
+  FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.FBDef,System.IniFiles,
+  Datasnap.Provider, Datasnap.DBClient;
 
 type
   TDM = class(TDataModule)
-    Conexao: TFDConnection;
     tbProdutos: TFDTable;
     tbMovProdutos: TFDTable;
     dsProdutos: TDataSource;
     dsMovProdutos: TDataSource;
     tbMovimentacoes: TFDTable;
     dsMovimentacoes: TDataSource;
-    sqlAumentaEstoque: TFDCommand;
-    sqlDiminuiEstoque: TFDCommand;
     sqlMovimentacoes: TFDQuery;
     dsSqlMovimentacoes: TDataSource;
     sqlValidaEstoque: TFDQuery;
@@ -40,15 +38,20 @@ type
     tbProdutosFABRICANTE: TStringField;
     tbProdutosVALIDADE: TDateField;
     tbProdutosESTOQUEATUAL: TIntegerField;
+    Conexao: TFDConnection;
+    sqlAumentaEstoque: TFDCommand;
+    sqlDiminuiEstoque: TFDCommand;
     procedure calcularTotais;
     procedure tbMovimentacoesAfterScroll(DataSet: TDataSet);
     procedure tbMovProdutosAfterDelete(DataSet: TDataSet);
     procedure tbMovProdutosAfterPost(DataSet: TDataSet);
     procedure tbMovProdutosBeforeDelete(DataSet: TDataSet);
+    procedure DataModuleCreate(Sender: TObject);
+
   private
-    { Private declarations }
+
   public
-    { Public declarations }
+
   end;
 
 var
@@ -56,11 +59,13 @@ var
 
 implementation
 
+
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses UnitCadMovimentacao;
+uses UnitCadMovimentacao, UnFuncoes;
 
 {$R *.dfm}
+
 
 procedure TDM.calcularTotais;
 var
@@ -80,6 +85,33 @@ begin
        formCadMovimentacao.txtTotalProdutos.Caption := IntToStr(totais);
    end;
 end;
+
+procedure TDM.DataModuleCreate(Sender: TObject);
+var
+  Mensagem : string;
+begin
+ try
+   with Conexao do
+    begin
+        Params.Clear;
+        Params.Values['DriverID']  := 'FB';
+        Params.Values['Server'] := TFuncoes.LerIni('FIREBIRD','Server');
+        Params.Values['Database'] := TFuncoes.LerIni('FIREBIRD','Database');
+        Params.Values['User_name'] := TFuncoes.LerIni('FIREBIRD','User');
+        Params.Values['Password'] := TFuncoes.LerIni('FIREBIRD','Password');
+        Params.Values['Port'] := TFuncoes.LerIni('FIREBIRD','Port');
+            Connected := True;
+            tbProdutos.Active := true;
+            tbMovProdutos.Active := true;
+            tbMovimentacoes.Active := true;
+            sqlMovimentacoes.Active := true;
+            sqlValidaEstoque.Active := true;
+    end;
+ finally
+
+ end;
+end;
+
 
 procedure TDM.tbMovimentacoesAfterScroll(DataSet: TDataSet);
 begin

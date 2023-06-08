@@ -11,7 +11,7 @@ type
   TFormCadMovimentacao = class(TForm)
     Label1: TLabel;
     cbTpMov: TDBComboBox;
-    DBEdit1: TDBEdit;
+    txtDataHora: TDBEdit;
     txtResponsavel: TDBEdit;
     mmObs: TDBMemo;
     Label2: TLabel;
@@ -35,8 +35,9 @@ type
     btnExcluiProd: TButton;
     btnCancelaProd: TButton;
     BtnConfirmaProd: TButton;
-    txtId: TDBEdit;
-    DBEdit2: TDBEdit;
+    txtIdMov: TDBEdit;
+    txtIdProd: TDBEdit;
+    txtIdMovProd: TDBEdit;
     procedure btnIncluiClick(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
     procedure btnCancelaClick(Sender: TObject);
@@ -59,10 +60,7 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDM;
-
-
-
+uses UnitDM, FireDAC.Comp.Client;
 
 procedure TFormCadMovimentacao.btnAlteraClick(Sender: TObject);
 begin
@@ -110,7 +108,12 @@ begin
 end;
 
 procedure TFormCadMovimentacao.btnConfirmaClick(Sender: TObject);
+var
+ vQry : TFDQuery;
 begin
+vQry := TFDQuery.Create(nil);
+vQry.Connection := DM.Conexao;
+
    if txtResponsavel.Text = '' then
     begin
       Application.MessageBox('Impossivel cadastrar movimentações sem o Responsavel', 'Favor preencher o responsavel', MB_ICONEXCLAMATION+MB_OK);
@@ -121,17 +124,33 @@ begin
     end;
    if (cbTpMov.Text <> '') and (txtResponsavel.Text <> '') then
     begin
-     btnInclui.Enabled := true;
-     btnExclui.enabled := true;
-     btnConfirma.Enabled := false;
-     btnCancela.Enabled := false;
-     btnIncluiProd.Enabled := true;
-     btnExcluiProd.enabled := true;
-     cbTpMov.Enabled := false;
-     txtResponsavel.ReadOnly := true;
-     mmObs.ReadOnly := true;
-
-     DM.tbMovimentacoes.Post;
+     try
+       vQry.Close;
+       vQry.SQL.Clear;
+       vQry.Params.Clear;
+       ///pega infos e deixa o insert pronto na vQry
+       vQry.SQL.Add('INSERT INTO MOVIMENTACOES(ID, TIPO, DATAHORA, RESPONSAVEL, OBSERVACOES) VALUES(:id, :tipo, :datahora, :responsavel, :observacoes)');
+       vQry.ParamByName('ID').Value := txtIdMov.Text;
+       vQry.ParamByName('TIPO').Value := cbTpMov.Text;
+       vQry.ParamByName('DATAHORA').Value := txtDataHora.text;
+       vQry.ParamByName('RESPONSAVEL').Value := txtResponsavel.text;
+       vQry.ParamByName('OBSERVACOES').Value := mmObs.Text;
+       ///enabled e disabled os botoes da tela
+         btnInclui.Enabled := true;
+         btnExclui.enabled := true;
+         btnConfirma.Enabled := false;
+         btnCancela.Enabled := false;
+         btnIncluiProd.Enabled := true;
+         btnExcluiProd.enabled := true;
+         cbTpMov.Enabled := false;
+         txtResponsavel.ReadOnly := true;
+         mmObs.ReadOnly := true;
+       ///executa o Insert que esta na vQry
+       vQry.ExecSQL;
+       DM.tbMovimentacoes.Cancel;
+     finally
+       vQry.Free;
+     end;
     end;
 end;
 
@@ -141,37 +160,66 @@ var
   qtde: Integer;
   resultado: Integer;
   produtoID: Integer;
+  pQry : TFDQuery;
 begin
+pQry := TFDQuery.Create(nil);
+pQry.connection := DM.Conexao;
+
     //seta o id do cbprod para o produtoID
     produtoID := cbProd.KeyValue;
-
     //faz uma consulta para buscar o estoqueAtual da tabel pelo id que esta no parametro
     DM.sqlValidaEstoque.SQL.Text := 'SELECT estoqueAtual FROM produtos WHERE id = :id';
     DM.sqlValidaEstoque.ParamByName('id').AsInteger := produtoID;
     DM.sqlValidaEstoque.Open;
-
     // valida se o sql nao trouxe vazio
     if not DM.sqlValidaEstoque.IsEmpty then
   begin
     if (cbTpMov.Text = 'Saida') then
     begin
-
       estoque := DM.sqlValidaEstoque.FieldByName('estoqueAtual').value;
       qtde := StrToInt(edtQtde.Text);
       resultado := estoque - qtde;
-
       //consulta pegando o (resultado - qtde) do text
       if resultado >= 0 then
       begin
       //estoque suficiente
-        btnIncluiProd.Enabled := true;
-        btnExcluiProd.enabled := true;
-        btnConfirmaProd.Enabled := false;
-        btnCancelaProd.Enabled := false;
-        cbProd.enabled := false;
-        edtQtde.Enabled := false;
+        try
+         pQry.Close;
+         pQry.SQL.Clear;
+         pQry.Params.Clear;
+         ///salva o valor na pQry
+         pQry.SQL.Add('INSERT INTO MOVIMENTACOES_PRODUTO (ID, IDMOVIMENTACAO, IDPRODUTO, QTD) VALUES(:ID, :IDMOVIMENTACAO, :IDPRODUTO, :QTD)');
+         pQry.ParamByName('ID').Value := txtIdMovProd.text;
+         pQry.ParamByName('IDMOVIMENTACAO').Value := txtIdMov.text;
+         pQry.ParamByName('IDPRODUTO').Value := txtIdProd.text;
+         pQry.ParamByName('QTD').Value := edtQtde.text;
+         ///enabled ou disabled os campos da tela
+         btnIncluiProd.Enabled := true;
+         btnExcluiProd.enabled := true;
+         btnConfirmaProd.Enabled := false;
+         btnCancelaProd.Enabled := false;
+         cbProd.enabled := false;
+         edtQtde.Enabled := false;
+         ///executa o SQL da pQry
+         pQry.ExecSQL;
 
-        DM.tbMovProdutos.Post;
+         try
+           pQry.Close;
+           pQry.SQL.Clear;
+           pQry.Params.Clear;
+
+           pQry.SQL.Add('UPDATE produtos SET estoqueAtual = estoqueAtual - :pQtd where id = :pId');
+           pQry.ParamByName('pId').value := txtIdProd.text;
+           pQry.ParamByName('pQtd').value := edtQtde.text;
+           pQry.ExecSQL;
+         finally
+
+         end;
+         DM.tbMovProdutos.Cancel;
+         DM.calcularTotais;
+        finally
+          pQry.Free;
+        end;
       end
       else
       begin
@@ -197,7 +245,44 @@ begin
         cbProd.enabled := false;
         edtQtde.Enabled := false;
 
-        DM.tbMovProdutos.Post;
+        try
+         pQry.Close;
+         pQry.SQL.Clear;
+         pQry.Params.Clear;
+         ///salva o valor na pQry
+         pQry.SQL.Add('INSERT INTO MOVIMENTACOES_PRODUTO (ID, IDMOVIMENTACAO, IDPRODUTO, QTD) VALUES(:ID, :IDMOVIMENTACAO, :IDPRODUTO, :QTD)');
+         pQry.ParamByName('ID').Value := txtIdMovProd.text;
+         pQry.ParamByName('IDMOVIMENTACAO').Value := txtIdMov.text;
+         pQry.ParamByName('IDPRODUTO').Value := txtIdProd.text;
+         pQry.ParamByName('QTD').Value := edtQtde.text;
+         ///enabled ou disabled os campos da tela
+         btnIncluiProd.Enabled := true;
+         btnExcluiProd.enabled := true;
+         btnConfirmaProd.Enabled := false;
+         btnCancelaProd.Enabled := false;
+         cbProd.enabled := false;
+         edtQtde.Enabled := false;
+         ///executa o SQL da pQry
+         pQry.ExecSQL;
+
+         try
+           pQry.Close;
+           pQry.SQL.Clear;
+           pQry.Params.Clear;
+
+           pQry.SQL.Add('UPDATE produtos SET estoqueAtual = estoqueAtual + :pQtd where id = :pId');
+           pQry.ParamByName('pId').value := txtIdProd.text;
+           pQry.ParamByName('pQtd').value := edtQtde.text;
+           pQry.ExecSQL;
+         finally
+
+         end;
+
+         DM.tbMovProdutos.Cancel;
+         DM.calcularTotais;
+        finally
+          pQry.Free;
+        end;
     end;
   end;
 
@@ -205,8 +290,12 @@ begin
 end;
 
 procedure TFormCadMovimentacao.btnExcluiClick(Sender: TObject);
+var
+  mQry : TFDQuery;
 begin
 DM.tbMovimentacoes.Refresh;
+mQry := TFDQuery.Create(nil);
+mQry.Connection := DM.Conexao;
 
 if Application.MessageBox('Deseja excluir a movimentação?', 'Excluir', MB_ICONQUESTION+MB_YESNO) = MRYES then
   BEGIN
@@ -216,38 +305,145 @@ if Application.MessageBox('Deseja excluir a movimentação?', 'Excluir', MB_ICONQU
      end
      else
      begin
-        DM.tbMovimentacoes.Delete;
+       try
+        mQry.Close;
+        mQry.SQL.Clear;
+        mQry.Params.Clear;
+
+        mQry.SQL.Add('DELETE FROM MOVIMENTACOES WHERE ID = :idMov');
+        mQry.paramByname('idMov').value := txtIdMov.text;
+
+        mQry.ExecSQL;
+        DM.tbMovimentacoes.Refresh;
+        DM.calcularTotais;
+       finally
+        mQry.Free;
+       end;
      end;
   END;
 end;
 
 procedure TFormCadMovimentacao.btnExcluiProdClick(Sender: TObject);
+var
+  mQry, pQry : TFDQuery;
 begin
+mQry := TFDQuery.Create(nil);
+mQry.Connection := DM.Conexao;
+pQry := TFDQuery.Create(nil);
+pQry.Connection := DM.Conexao;
+
   if Application.MessageBox('Deseja excluir o produto da movimentação?', 'Excluir', MB_ICONQUESTION+MB_YESNO) = MRYES then
   BEGIN
-    DM.tbMovProdutos.Delete;
+  try
+   mQry.Close;
+   mQry.SQL.Clear;
+   mQry.Params.Clear;
+
+   mQry.SQL.Add('DELETE FROM MOVIMENTACOES_PRODUTO WHERE ID = :ID AND IDPRODUTO = :IDPROD AND IDMOVIMENTACAO = :IDMOV AND QTD = :QTD');
+   mQry.ParamByName('id').Value := txtIdMovProd.Text;
+   mQry.ParamByName('IDPROD').Value := txtIdProd.Text;
+   mQry.ParamByName('IDMOV').Value := txtIdMov.Text;
+   mQry.ParamByName('QTD').Value := edtQtde.Text;
+
+   try
+      pQry.Close;
+      pQry.SQL.Clear;
+      pQry.Params.Clear;
+
+     if (cbTpMov.Text = 'Entrada') then
+      begin
+           pQry.SQL.Add('UPDATE produtos SET estoqueAtual = estoqueAtual - :pQtd where id = :pId');
+           pQry.ParamByName('pId').value := txtIdProd.text;
+           pQry.ParamByName('pQtd').value := edtQtde.text;
+           pQry.ExecSQL;
+      end
+     else
+      begin
+           pQry.SQL.Add('UPDATE produtos SET estoqueAtual = estoqueAtual + :pQtd where id = :pId');
+           pQry.ParamByName('pId').value := txtIdProd.text;
+           pQry.ParamByName('pQtd').value := edtQtde.text;
+           pQry.ExecSQL;
+      end;
+   finally
+     pQry.Free;
+   end;
+
+   mQry.ExecSQL;
+   DM.tbMovProdutos.Refresh;
+   DM.calcularTotais;
+  finally
+   mQry.Free;
+  end;
   END;
 end;
 
 procedure TFormCadMovimentacao.btnIncluiClick(Sender: TObject);
+var
+  iQry : TFDQuery;
+  result : integer;
 begin
- btnInclui.Enabled := false;
- btnExclui.enabled := false;
- btnConfirma.Enabled := true;
- btnCancela.Enabled := true;
- btnIncluiProd.Enabled := false;
- btnExcluiProd.enabled := false;
- cbTpMov.Enabled := True;
- txtResponsavel.ReadOnly := false;
- mmObs.ReadOnly := false;
+  iQry := TFDQuery.Create(nil);
+   iQry.Connection := DM.Conexao;
 
- DM.tbMovimentacoes.Append;
- DM.tbMovimentacoes.FieldByName('dataHora').value := now;
- DM.tbMovimentacoes.FieldByName('id').asInteger := 36;
+   try
+     iQry.Close;
+     iQry.SQL.Clear;
+     iQry.Params.Clear;
+
+     iQry.SQL.Add('SELECT MAX(ID) +1 FROM MOVIMENTACOES');
+     iQry.Open;
+     ///seta o valor de result para o campo ID do movimentacoes +1
+     if iQry.RecordCount = 0 then
+     begin
+      result := 1
+     end
+     else
+     begin
+      result := iQry.Fields[0].AsInteger;
+     end;
+       ///enabled ou disabled campos na tela
+         btnInclui.Enabled := false;
+         btnExclui.enabled := false;
+         btnConfirma.Enabled := true;
+         btnCancela.Enabled := true;
+         btnIncluiProd.Enabled := false;
+         btnExcluiProd.enabled := false;
+         cbTpMov.Enabled := True;
+         txtResponsavel.ReadOnly := false;
+         mmObs.ReadOnly := false;
+      ///funcoes de inclusão no banco de dados
+         DM.tbMovimentacoes.Append;
+         DM.tbMovimentacoes.FieldByName('dataHora').value := now;
+         DM.tbMovimentacoes.FieldByName('id').Value := result;
+   finally
+      iQry.Free;
+   end;
 end;
 
 procedure TFormCadMovimentacao.btnIncluiProdClick(Sender: TObject);
+var
+  iQry : TFDQuery;
+  resultID : Integer;
 begin
+iQry := TFDQuery.Create(nil);
+iQry.Connection := DM.Conexao;
+
+     iQry.Close;
+     iQry.SQL.Clear;
+     iQry.Params.Clear;
+
+     iQry.SQL.Add('SELECT MAX(ID) +1 FROM MOVIMENTACOES_PRODUTO');
+     iQry.Open;
+     ///seta o valor de result para o campo ID do MOVIMENTACOES_PRODUTO +1
+     if iQry.RecordCount = 0 then
+     begin
+      resultID := 1
+     end
+     else
+     begin
+      resultID := iQry.Fields[0].AsInteger;
+     end;
+
   btnIncluiProd.Enabled := false;
   btnExcluiProd.enabled := false;
   btnConfirmaProd.Enabled := true;
@@ -256,6 +452,7 @@ begin
   edtQtde.Enabled := true;
 
   DM.tbMovProdutos.Append;
+  DM.tbMovProdutos.FieldByName('id').Value := resultID;
 end;
 
 end.
