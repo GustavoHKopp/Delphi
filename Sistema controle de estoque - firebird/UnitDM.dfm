@@ -3,7 +3,6 @@ object DM: TDM
   Height = 480
   Width = 640
   object tbProdutos: TFDTable
-    Active = True
     IndexFieldNames = 'ID'
     Connection = Conexao
     ResourceOptions.AssignedValues = [rvEscapeExpand]
@@ -38,7 +37,6 @@ object DM: TDM
     end
   end
   object tbMovProdutos: TFDTable
-    Active = True
     AfterPost = tbMovProdutosAfterPost
     BeforeDelete = tbMovProdutosBeforeDelete
     AfterDelete = tbMovProdutosAfterDelete
@@ -92,7 +90,6 @@ object DM: TDM
     Top = 192
   end
   object tbMovimentacoes: TFDTable
-    Active = True
     AfterScroll = tbMovimentacoesAfterScroll
     IndexFieldNames = 'id'
     Connection = Conexao
@@ -135,7 +132,6 @@ object DM: TDM
     Top = 264
   end
   object sqlMovimentacoes: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
       'SELECT * FROM movimentacoes')
@@ -148,7 +144,6 @@ object DM: TDM
     Top = 248
   end
   object sqlValidaEstoque: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
       'select * from produtos')
@@ -167,11 +162,9 @@ object DM: TDM
   end
   object Conexao: TFDConnection
     Params.Strings = (
+      'DriverID=FB'
       'User_Name=sysdba'
-      'Password=masterkey'
-      'Database=D:\documents\base\ESTOQUE.FDB'
-      'DriverID=FB')
-    Connected = True
+      'Password=masterkey')
     LoginPrompt = False
     Left = 64
     Top = 48

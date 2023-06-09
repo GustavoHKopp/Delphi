@@ -8,19 +8,17 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MySQL,
   FireDAC.Phys.MySQLDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.FBDef;
+  FireDAC.Comp.Client, FireDAC.Phys.FB, FireDAC.Phys.FBDef,System.IniFiles,
+  Datasnap.Provider, Datasnap.DBClient;
 
 type
   TDM = class(TDataModule)
-    Conexao: TFDConnection;
     tbProdutos: TFDTable;
     tbMovProdutos: TFDTable;
     dsProdutos: TDataSource;
     dsMovProdutos: TDataSource;
     tbMovimentacoes: TFDTable;
     dsMovimentacoes: TDataSource;
-    sqlAumentaEstoque: TFDCommand;
-    sqlDiminuiEstoque: TFDCommand;
     sqlMovimentacoes: TFDQuery;
     dsSqlMovimentacoes: TDataSource;
     sqlValidaEstoque: TFDQuery;
@@ -40,17 +38,20 @@ type
     tbProdutosFABRICANTE: TStringField;
     tbProdutosVALIDADE: TDateField;
     tbProdutosESTOQUEATUAL: TIntegerField;
+    Conexao: TFDConnection;
+    sqlAumentaEstoque: TFDCommand;
+    sqlDiminuiEstoque: TFDCommand;
     procedure calcularTotais;
     procedure tbMovimentacoesAfterScroll(DataSet: TDataSet);
     procedure tbMovProdutosAfterDelete(DataSet: TDataSet);
     procedure tbMovProdutosAfterPost(DataSet: TDataSet);
     procedure tbMovProdutosBeforeDelete(DataSet: TDataSet);
-    procedure CarregarIni;
+    procedure DataModuleCreate(Sender: TObject);
 
   private
-    { Private declarations }
+
   public
-    { Public declarations }
+
   end;
 
 var
@@ -58,9 +59,10 @@ var
 
 implementation
 
+
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses UnitCadMovimentacao, IniFiles;
+uses UnitCadMovimentacao, UnFuncoes;
 
 {$R *.dfm}
 
@@ -84,30 +86,32 @@ begin
    end;
 end;
 
-
-procedure TDM.CarregarIni;
+procedure TDM.DataModuleCreate(Sender: TObject);
 var
-  ini: TIniFile;
+  Mensagem : string;
 begin
-  ini := TIniFile.Create('estoque.ini');
-  try
-    // Lendo as informações do arquivo ini
-    Conexao.Params.Clear; // Limpa os parâmetros anteriores
-    Conexao.Params.Add('DriverID=FB');
-    Conexao.Params.Add('Database=' + ini.ReadString('Conexao', 'Database', ''));
-    Conexao.Params.Add('User_Name=' + ini.ReadString('Conexao', 'Username', ''));
-    Conexao.Params.Add('Password=' + ini.ReadString('Conexao', 'Password', ''));
-    Conexao.Params.Add('Server=' + ini.ReadString('Conexao', 'Server', ''));
-    Conexao.Params.Add('Port=' + ini.ReadString('Conexao', 'Port', ''));
+ try
+   with Conexao do
+    begin
+        Params.Clear;
+        Params.Values['DriverID']  := 'FB';
+        Params.Values['Server'] := TFuncoes.LerIni('FIREBIRD','Server');
+        Params.Values['Database'] := TFuncoes.LerIni('FIREBIRD','Database');
+        Params.Values['User_name'] := TFuncoes.LerIni('FIREBIRD','User');
+        Params.Values['Password'] := TFuncoes.LerIni('FIREBIRD','Password');
+        Params.Values['Port'] := TFuncoes.LerIni('FIREBIRD','Port');
+            Connected := True;
+            tbProdutos.Active := true;
+            tbMovProdutos.Active := true;
+            tbMovimentacoes.Active := true;
+            sqlMovimentacoes.Active := true;
+            sqlValidaEstoque.Active := true;
+    end;
+ finally
 
-    // Conectar ao banco de dados
-    Conexao.Connected := True;
-
-    // Use o objeto 'Conexao' para suas operações de banco de dados
-  finally
-    ini.Free;
-  end;
+ end;
 end;
+
 
 procedure TDM.tbMovimentacoesAfterScroll(DataSet: TDataSet);
 begin

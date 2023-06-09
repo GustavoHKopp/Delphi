@@ -1,4 +1,5 @@
 object DM: TDM
+  OnCreate = DataModuleCreate
   Height = 480
   Width = 640
   object tbProdutos: TFDTable
@@ -133,45 +134,9 @@ object DM: TDM
     Left = 224
     Top = 264
   end
-  object sqlAumentaEstoque: TFDCommand
-    CommandText.Strings = (
-      
-        'UPDATE produtos SET estoqueAtual = estoqueAtual + :pQtd where id' +
-        ' = :pId')
-    ParamData = <
-      item
-        Name = 'pQtd'
-        DataType = ftInteger
-        ParamType = ptInput
-      end
-      item
-        Name = 'pId'
-        DataType = ftInteger
-        ParamType = ptInput
-      end>
-    Left = 496
-    Top = 40
-  end
-  object sqlDiminuiEstoque: TFDCommand
-    CommandText.Strings = (
-      
-        'UPDATE produtos SET estoqueAtual = estoqueAtual - :pQtd where id' +
-        ' = :pId')
-    ParamData = <
-      item
-        Name = 'pQtd'
-        DataType = ftInteger
-        ParamType = ptInput
-      end
-      item
-        Name = 'pId'
-        DataType = ftInteger
-        ParamType = ptInput
-      end>
-    Left = 496
-    Top = 112
-  end
   object sqlMovimentacoes: TFDQuery
+    Active = True
+    Connection = Conexao
     SQL.Strings = (
       'SELECT * FROM movimentacoes')
     Left = 384
@@ -183,6 +148,8 @@ object DM: TDM
     Top = 248
   end
   object sqlValidaEstoque: TFDQuery
+    Active = True
+    Connection = Conexao
     SQL.Strings = (
       'select * from produtos')
     Left = 384
@@ -203,13 +170,50 @@ object DM: TDM
       'User_Name=sysdba'
       'Password=masterkey'
       'Database=D:\documents\base\ESTOQUE.FDB'
-      'Server=localhost'
-      'Port=3050'
       'DriverID=FB')
     Connected = True
     LoginPrompt = False
-    BeforeConnect = ConexaoBeforeConnect
     Left = 64
     Top = 48
+  end
+  object sqlAumentaEstoque: TFDCommand
+    Connection = Conexao
+    CommandText.Strings = (
+      
+        'UPDATE produtos SET estoqueAtual = estoqueAtual + :pQtd where id' +
+        ' = :pId')
+    ParamData = <
+      item
+        Name = 'pQtd'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'pId'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    Left = 496
+    Top = 40
+  end
+  object sqlDiminuiEstoque: TFDCommand
+    Connection = Conexao
+    CommandText.Strings = (
+      
+        'UPDATE produtos SET estoqueAtual = estoqueAtual - :pQtd where id' +
+        ' = :pId')
+    ParamData = <
+      item
+        Name = 'pQtd'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'pId'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    Left = 496
+    Top = 112
   end
 end

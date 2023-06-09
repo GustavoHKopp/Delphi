@@ -87,8 +87,6 @@ begin
 end;
 
 procedure TDM.DataModuleCreate(Sender: TObject);
-var
-  Mensagem : string;
 begin
  try
    with Conexao do
