@@ -1,7 +1,7 @@
 object FormCadMovimentacao: TFormCadMovimentacao
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu]
+  BorderIcons = [biSystemMenu, biMaximize]
   BorderStyle = bsSingle
   Caption = 'Cadastro de Movimenta'#231#227'o'
   ClientHeight = 476
@@ -12,7 +12,12 @@ object FormCadMovimentacao: TFormCadMovimentacao
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  FormStyle = fsMDIChild
   Position = poScreenCenter
+  Visible = True
+  WindowState = wsMaximized
+  OnClose = FormClose
+  OnShow = FormShow
   TextHeight = 15
   object Label1: TLabel
     Left = 24
@@ -218,7 +223,7 @@ object FormCadMovimentacao: TFormCadMovimentacao
     Top = 91
     Width = 344
     Height = 312
-    DataSource = DM.dsMovimentacoes
+    DataSource = DataSource1
     TabOrder = 4
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -235,11 +240,13 @@ object FormCadMovimentacao: TFormCadMovimentacao
         Expanded = False
         FieldName = 'DATAHORA'
         Title.Caption = 'DATA E HORA'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'RESPONSAVEL'
+        Width = 64
         Visible = True
       end>
   end
@@ -345,6 +352,7 @@ object FormCadMovimentacao: TFormCadMovimentacao
       item
         Expanded = False
         FieldName = 'QTD'
+        Width = 64
         Visible = True
       end>
   end
@@ -415,5 +423,20 @@ object FormCadMovimentacao: TFormCadMovimentacao
     DataSource = DM.dsMovProdutos
     TabOrder = 18
     Visible = False
+  end
+  object btnFechar: TButton
+    Left = 349
+    Top = 430
+    Width = 75
+    Height = 31
+    Caption = 'Fechar'
+    TabOrder = 19
+    OnClick = btnFecharClick
+  end
+  object DataSource1: TDataSource
+    DataSet = DM.tbMovimentacoes
+    OnDataChange = DataSource1DataChange
+    Left = 584
+    Top = 432
   end
 end

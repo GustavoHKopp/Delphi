@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.ExtCtrls,
-  Vcl.Imaging.pngimage;
+  Vcl.Imaging.pngimage, UnitCadMovimentacao, UnitCadProdutos;
 
 type
   TFormPrincipal = class(TForm)
@@ -23,10 +23,15 @@ type
     procedure GerenciarMovimentaes1Click(Sender: TObject);
     procedure EditorSql1Click(Sender: TObject);
     function Aspas(Value : String) : String;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
-
+    var
+      FormCadMovimentacoesAberto: boolean;
+      CadMovimentacoesForm: TFormCadMovimentacao;
+      CadProdutosForm: TFormCadProdutos;
   end;
 
 var
@@ -36,7 +41,7 @@ implementation
 
 {$R *.dfm}
 
-uses UnitCadProdutos, UnitCadMovimentacao,  UnitEditorSql;
+uses UnitEditorSql;
 
 function TFormPrincipal.Aspas(Value: String): String;
 begin
@@ -45,26 +50,71 @@ end;
 
 procedure TFormPrincipal.EditorSql1Click(Sender: TObject);
 begin
- FormEditorSql.ShowModal;
+ FormEditorSql.Show;
+end;
+
+procedure TFormPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+ IF Application.MessageBox('Deseja Realmente sair do sistema?','Sair', MB_ICONQUESTION+MB_YESNO) = mrYes then
+ BEGIN
+  if (CadProdutosForm = nil) and (CadMovimentacoesForm = nil) then
+    begin
+        Application.Terminate
+    end
+  else
+    begin
+      Application.MessageBox('Impossivel finalizar o sistema com telas abertas, favor fechar todas as telas!', 'Sistema', MB_ICONEXCLAMATION+MB_OK);
+      Action := caNone;
+    end;
+ END;
+end;
+
+procedure TFormPrincipal.FormCreate(Sender: TObject);
+begin
+ FormPrincipal.BringToFront;
 end;
 
 procedure TFormPrincipal.GerenciarMovimentaes1Click(Sender: TObject);
 begin
- FormCadMovimentacao.showModal
+///valida se a var que contem se a tela foi criada na memoria é igual a vazia
+if CadMovimentacoesForm = nil then
+  begin
+    CadMovimentacoesForm := TFormCadMovimentacao.Create(Self);
+    CadMovimentacoesForm.Show;
+  end
+  else
+  ///caso for vazia ira somente trazer a tela para frente
+    CadMovimentacoesForm.BringToFront;
 end;
+
 
 procedure TFormPrincipal.Produto1Click(Sender: TObject);
 begin
- FormCadProdutos.showModal
+///valida se a var que contem se a tela foi criada na memoria é igual a vazia
+if CadProdutosForm = nil then
+  begin
+    cadProdutosForm := TFormCadProdutos.Create(self);
+    cadProdutosForm.Show;
+  end
+  else
+  ///caso for vazia ira somente trazer a tela para frente
+    cadProdutosForm.BringToFront;
+
 end;
 
 procedure TFormPrincipal.Sistema2Click(Sender: TObject);
 begin
  IF Application.MessageBox('Deseja Realmente sair do sistema?','Sair', MB_ICONQUESTION+MB_YESNO) = mrYes then
  BEGIN
-  Application.Terminate
+  if (CadProdutosForm = nil) and (CadMovimentacoesForm = nil) then
+    begin
+        Application.Terminate
+    end
+  else
+    begin
+      Application.MessageBox('Impossivel finalizar o sistema com telas abertas, favor fechar todas as telas!', 'Sistema', MB_ICONEXCLAMATION+MB_OK)
+    end;
  END;
-
 end;
 
 end.

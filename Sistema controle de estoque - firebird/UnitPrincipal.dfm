@@ -10,8 +10,11 @@ object FormPrincipal: TFormPrincipal
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  FormStyle = fsMDIForm
   Menu = MainMenu1
   WindowState = wsMaximized
+  OnClose = FormClose
+  OnCreate = FormCreate
   TextHeight = 15
   object Image1: TImage
     Left = 0

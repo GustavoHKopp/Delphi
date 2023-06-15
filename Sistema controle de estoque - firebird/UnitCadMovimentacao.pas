@@ -38,6 +38,8 @@ type
     txtIdMov: TDBEdit;
     txtIdProd: TDBEdit;
     txtIdMovProd: TDBEdit;
+    btnFechar: TButton;
+    DataSource1: TDataSource;
     procedure btnIncluiClick(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
     procedure btnCancelaClick(Sender: TObject);
@@ -47,6 +49,11 @@ type
     procedure btnExcluiProdClick(Sender: TObject);
     procedure BtnConfirmaProdClick(Sender: TObject);
     procedure btnCancelaProdClick(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    procedure calcularTotais;
+    procedure DataSource1DataChange(Sender: TObject; Field: TField);
   private
     { Private declarations }
   public
@@ -60,7 +67,7 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDM, FireDAC.Comp.Client;
+uses UnitDM, FireDAC.Comp.Client, UnitPrincipal;
 
 procedure TFormCadMovimentacao.btnAlteraClick(Sender: TObject);
 begin
@@ -84,6 +91,7 @@ begin
      btnCancela.Enabled := false;
      btnIncluiProd.Enabled := true;
      btnExcluiProd.enabled := true;
+     btnFechar.Enabled := true;
      cbTpMov.Enabled := false;
      txtResponsavel.ReadOnly := true;
      mmObs.ReadOnly := true;
@@ -100,6 +108,7 @@ begin
     btnExcluiProd.enabled := true;
     btnConfirmaProd.Enabled := false;
     btnCancelaProd.Enabled := false;
+    btnFechar.Enabled := true;
     cbProd.enabled := false;
     edtQtde.Enabled := false;
 
@@ -132,7 +141,7 @@ vQry.Connection := DM.Conexao;
        vQry.SQL.Add('INSERT INTO MOVIMENTACOES(ID, TIPO, DATAHORA, RESPONSAVEL, OBSERVACOES) VALUES(:id, :tipo, :datahora, :responsavel, :observacoes)');
        vQry.ParamByName('ID').Value := txtIdMov.Text;
        vQry.ParamByName('TIPO').Value := cbTpMov.Text;
-       vQry.ParamByName('DATAHORA').Value := txtDataHora.text;
+       vQry.ParamByName('DATAHORA').Value := StrToDateTime(txtDataHora.text);
        vQry.ParamByName('RESPONSAVEL').Value := txtResponsavel.text;
        vQry.ParamByName('OBSERVACOES').Value := mmObs.Text;
        ///enabled e disabled os botoes da tela
@@ -142,6 +151,7 @@ vQry.Connection := DM.Conexao;
          btnCancela.Enabled := false;
          btnIncluiProd.Enabled := true;
          btnExcluiProd.enabled := true;
+         btnFechar.Enabled := true;
          cbTpMov.Enabled := false;
          txtResponsavel.ReadOnly := true;
          mmObs.ReadOnly := true;
@@ -197,6 +207,7 @@ pQry.connection := DM.Conexao;
          btnIncluiProd.Enabled := true;
          btnExcluiProd.enabled := true;
          btnConfirmaProd.Enabled := false;
+         btnFechar.Enabled := true;
          btnCancelaProd.Enabled := false;
          cbProd.enabled := false;
          edtQtde.Enabled := false;
@@ -216,7 +227,7 @@ pQry.connection := DM.Conexao;
 
          end;
          DM.tbMovProdutos.Cancel;
-         DM.calcularTotais;
+         calcularTotais;
         finally
           pQry.Free;
         end;
@@ -229,6 +240,7 @@ pQry.connection := DM.Conexao;
         btnExcluiProd.enabled := true;
         btnConfirmaProd.Enabled := false;
         btnCancelaProd.Enabled := false;
+        btnFechar.Enabled := true;
         cbProd.enabled := false;
         edtQtde.Enabled := false;
 
@@ -242,6 +254,7 @@ pQry.connection := DM.Conexao;
         btnExcluiProd.enabled := true;
         btnConfirmaProd.Enabled := false;
         btnCancelaProd.Enabled := false;
+        btnFechar.Enabled := true;
         cbProd.enabled := false;
         edtQtde.Enabled := false;
 
@@ -279,7 +292,7 @@ pQry.connection := DM.Conexao;
          end;
 
          DM.tbMovProdutos.Cancel;
-         DM.calcularTotais;
+         calcularTotais;
         finally
           pQry.Free;
         end;
@@ -315,7 +328,7 @@ if Application.MessageBox('Deseja excluir a movimentação?', 'Excluir', MB_ICONQU
 
         mQry.ExecSQL;
         DM.tbMovimentacoes.Refresh;
-        DM.calcularTotais;
+        calcularTotais;
        finally
         mQry.Free;
        end;
@@ -370,11 +383,16 @@ pQry.Connection := DM.Conexao;
 
    mQry.ExecSQL;
    DM.tbMovProdutos.Refresh;
-   DM.calcularTotais;
+   calcularTotais;
   finally
    mQry.Free;
   end;
   END;
+end;
+
+procedure TFormCadMovimentacao.btnFecharClick(Sender: TObject);
+begin
+ Close;
 end;
 
 procedure TFormCadMovimentacao.btnIncluiClick(Sender: TObject);
@@ -408,6 +426,7 @@ begin
          btnCancela.Enabled := true;
          btnIncluiProd.Enabled := false;
          btnExcluiProd.enabled := false;
+         btnFechar.Enabled := false;
          cbTpMov.Enabled := True;
          txtResponsavel.ReadOnly := false;
          mmObs.ReadOnly := false;
@@ -448,11 +467,56 @@ iQry.Connection := DM.Conexao;
   btnExcluiProd.enabled := false;
   btnConfirmaProd.Enabled := true;
   btnCancelaProd.Enabled := true;
+  btnFechar.Enabled := false;
   cbProd.enabled := true;
   edtQtde.Enabled := true;
 
   DM.tbMovProdutos.Append;
   DM.tbMovProdutos.FieldByName('id').Value := resultID;
+end;
+
+procedure TFormCadMovimentacao.calcularTotais;
+
+var
+  totais : integer;
+begin
+  if DM.tbMovProdutos.State in [dsBrowse] then
+   begin
+     Dm.tbMovProdutos.First;
+
+      while not DM.tbMovProdutos.Eof do
+       begin
+         totais:= totais + DM.tbMovProdutos.FieldByName('qtd').value;
+
+         DM.tbMovProdutos.Next;
+       end;
+
+         txtTotalProdutos.Caption := IntToStr(totais);
+
+   end;
+end;
+
+
+procedure TFormCadMovimentacao.DataSource1DataChange(Sender: TObject;
+  Field: TField);
+begin
+   if Field = nil then
+  begin
+    calcularTotais;
+  end;
+end;
+
+procedure TFormCadMovimentacao.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+ Action := caFree;
+ FormPrincipal.CadMovimentacoesForm := NIL;
+end;
+
+procedure TFormCadMovimentacao.FormShow(Sender: TObject);
+begin
+ calcularTotais;
+ windowState := wsMaximized;
 end;
 
 end.

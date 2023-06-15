@@ -15,9 +15,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFormPrincipal, FormPrincipal);
-  Application.CreateForm(TFormCadProdutos, FormCadProdutos);
-  Application.CreateForm(TFormCadMovimentacao, FormCadMovimentacao);
   Application.CreateForm(TDM, DM);
-  Application.CreateForm(TFormEditorSql, FormEditorSql);
   Application.Run;
 end.

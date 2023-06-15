@@ -1,18 +1,22 @@
 object FormCadProdutos: TFormCadProdutos
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu]
+  BorderIcons = [biSystemMenu, biMaximize]
   BorderStyle = bsSingle
   Caption = 'Cadastro de Produtos'
-  ClientHeight = 450
-  ClientWidth = 741
+  ClientHeight = 449
+  ClientWidth = 796
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
-  Position = poScreenCenter
+  FormStyle = fsMDIChild
+  Position = poDefault
+  Visible = True
+  WindowState = wsMaximized
+  OnClose = FormClose
   OnShow = FormShow
   TextHeight = 15
   object Label1: TLabel
@@ -158,8 +162,8 @@ object FormCadProdutos: TFormCadProdutos
     TabOrder = 3
   end
   object DBGrid1: TDBGrid
-    Left = 375
-    Top = 31
+    Left = 431
+    Top = 40
     Width = 361
     Height = 402
     DataSource = DM.dsProdutos
@@ -254,5 +258,14 @@ object FormCadProdutos: TFormCadProdutos
     Enabled = False
     TabOrder = 9
     OnClick = btnConfirmaClick
+  end
+  object btnFechar: TButton
+    Left = 350
+    Top = 402
+    Width = 75
+    Height = 31
+    Caption = 'Fechar'
+    TabOrder = 10
+    OnClick = btnFecharClick
   end
 end

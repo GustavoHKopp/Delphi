@@ -25,11 +25,14 @@ type
     btnExclui: TButton;
     btnCancela: TButton;
     btnConfirma: TButton;
+    btnFechar: TButton;
     procedure btnCancelaClick(Sender: TObject);
     procedure btnIncluiClick(Sender: TObject);
     procedure btnExcluiClick(Sender: TObject);
     procedure btnConfirmaClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -51,6 +54,7 @@ begin
    btnExclui.Enabled := true;
    btnConfirma.Enabled := false;
    btnCancela.Enabled := false;
+   btnFechar.Enabled := true;
    txtNomeProd.Enabled := false;
    txtFabricante.Enabled := false;
 
@@ -73,7 +77,7 @@ begin
        vQry.ParamByName('id').value := txtId.text;
        vQry.ParamByName('nome').value := txtNomeProd.text;
        vQry.ParamByName('fabricante').value := txtFabricante.text;
-       vQry.ParamByName('validade').Value := edtValidade.Text;
+       vQry.ParamByName('validade').Value := StrToDate(edtValidade.Text);
        vQry.ParamByName('estoqueAtual').Value := '0';
        ///validações de campos não informados
        if txtNomeProd.Text = '' then
@@ -89,6 +93,7 @@ begin
            btnInclui.Enabled := true;
            btnExclui.Enabled := true;
            btnConfirma.Enabled := false;
+           btnFechar.Enabled := true;
            btnCancela.Enabled := false;
            txtNomeProd.Enabled := false;
            txtFabricante.Enabled := false;
@@ -160,6 +165,11 @@ end;
  END;
 end;
 
+procedure TFormCadProdutos.btnFecharClick(Sender: TObject);
+begin
+ Close;
+end;
+
 procedure TFormCadProdutos.btnIncluiClick(Sender: TObject);
 var
   iQry : TFDQuery;
@@ -188,6 +198,7 @@ begin
        btnInclui.Enabled := false;
        btnExclui.Enabled := false;
        btnConfirma.Enabled := true;
+       btnFechar.Enabled := false;
        btnCancela.Enabled := true;
        txtNomeProd.Enabled := true;
        txtFabricante.Enabled := true;
@@ -202,9 +213,16 @@ begin
 
 end;
 
+procedure TFormCadProdutos.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+ Action := caFree;
+  FormPrincipal.CadProdutosForm := NIL;
+end;
+
 procedure TFormCadProdutos.FormShow(Sender: TObject);
 begin
  DM.tbProdutos.Refresh;
+ WindowState := wsMaximized;
 end;
 
 end.

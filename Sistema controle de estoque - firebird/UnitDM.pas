@@ -62,7 +62,7 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses UnitCadMovimentacao, UnFuncoes;
+uses UnitCadMovimentacao, UnFuncoes, UnitPrincipal;
 
 {$R *.dfm}
 
@@ -82,7 +82,8 @@ begin
          tbMovProdutos.Next;
        end;
 
-       formCadMovimentacao.txtTotalProdutos.Caption := IntToStr(totais);
+        ///ormCadMovimentacao.txtTotalProdutos.Caption := IntToStr(totais);
+
    end;
 end;
 
@@ -109,7 +110,6 @@ begin
 
  end;
 end;
-
 
 procedure TDM.tbMovimentacoesAfterScroll(DataSet: TDataSet);
 begin
