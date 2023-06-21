@@ -240,13 +240,11 @@ object FormCadMovimentacao: TFormCadMovimentacao
         Expanded = False
         FieldName = 'DATAHORA'
         Title.Caption = 'DATA E HORA'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'RESPONSAVEL'
-        Width = 64
         Visible = True
       end>
   end
@@ -352,7 +350,6 @@ object FormCadMovimentacao: TFormCadMovimentacao
       item
         Expanded = False
         FieldName = 'QTD'
-        Width = 64
         Visible = True
       end>
   end

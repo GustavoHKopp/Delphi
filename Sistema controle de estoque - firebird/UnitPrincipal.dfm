@@ -13259,14 +13259,13 @@ object FormPrincipal: TFormPrincipal
     Left = 544
     object Sistema1: TMenuItem
       Caption = 'Sistema'
+      object EditorSql1: TMenuItem
+        Caption = 'Editor Sql'
+        OnClick = EditorSql1Click
+      end
       object Sistema2: TMenuItem
         Caption = 'Sair'
         OnClick = Sistema2Click
-      end
-      object EditorSql1: TMenuItem
-        Caption = 'Editor Sql'
-        Visible = False
-        OnClick = EditorSql1Click
       end
     end
     object Cadastros1: TMenuItem
