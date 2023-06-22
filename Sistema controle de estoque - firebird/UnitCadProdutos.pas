@@ -215,8 +215,16 @@ end;
 
 procedure TFormCadProdutos.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
- Action := caFree;
-  FormPrincipal.CadProdutosForm := NIL;
+  if btnInclui.Enabled = false then
+    begin
+      Application.MessageBox('Impossivel fechar a tela com registro em alteração', 'Sistema', MB_ICONERROR+MB_OK);
+      Action := caNone;
+    end
+  else
+    begin
+      Action := caFree;
+      FormPrincipal.CadProdutosForm := NIL;
+    end;
 end;
 
 procedure TFormCadProdutos.FormShow(Sender: TObject);

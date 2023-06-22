@@ -37,7 +37,7 @@ object FormEditorSql: TFormEditorSql
     ParentFont = False
     TabOrder = 0
     OnKeyDown = mmSqlKeyDown
-    ExplicitLeft = 8
+    ExplicitWidth = 1536
   end
   object DBGrid1: TDBGrid
     AlignWithMargins = True
@@ -48,6 +48,7 @@ object FormEditorSql: TFormEditorSql
     Align = alTop
     Anchors = [akLeft, akTop, akRight, akBottom]
     DataSource = dsSql
+    ReadOnly = True
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -62,6 +63,7 @@ object FormEditorSql: TFormEditorSql
     Height = 49
     Align = alTop
     TabOrder = 2
+    ExplicitWidth = 1542
     object Label1: TLabel
       Left = 23
       Top = 9
